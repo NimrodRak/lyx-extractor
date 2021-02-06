@@ -1,4 +1,4 @@
-import regex as re
+import re
 
 MACRO_PATTERN_STRING = rf"\\begin_inset FormulaMacro[\w\W]*?\\end_inset"
 HEBREW_CLAIM = "טענה"
@@ -7,6 +7,8 @@ THEOREM_PATTERN_STRING = rf"\\begin_layout Description\n(?:(?:\b{HEBREW_CLAIM}\b
 HEADER_PATTERN_STRING = rf"^[\w\W]*?\\begin_body"
 BEGIN_STANDARD_LAYOUT = "\\begin_layout Standard\n"
 END_LAYOUT = "\\end_layout\n"
+BEGIN_LAYOUT_TEXT = "\\begin_layout Enumerate\n"
+BEGIN_LAYOUT_LENGTH = len(r"\begin_layout Description משפט ")
 END_DOCUMENT = "\\end_body\n\\end_document"
 NEW_FILE_NAME = "./lanew.lyx"
 RAW_FILE_NAME = "./latest.lyx"
@@ -36,10 +38,9 @@ def main():
             new_file.write(macro + NEWLINE)
         new_file.write(END_LAYOUT)
         for theorem in theorems:
-            BEGIN_LAYOUT_TEXT = "\\begin_layout Enumerate\n"
-            BEGIN_LAYOUT_LENGTH = len(r"\begin_layout Description משפט ")
             new_file.write(BEGIN_LAYOUT_TEXT + theorem[BEGIN_LAYOUT_LENGTH:] + NEWLINE)
         new_file.write(END_DOCUMENT)
+
 
 if __name__ == "__main__":
     main()
